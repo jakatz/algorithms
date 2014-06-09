@@ -1,10 +1,9 @@
 # This class is complete. You do not need to alter this
 class Card
-  # Rank is the rank of the card, 2-10, J, Q, K, A
+  attr_reader :value, :suit
   # Value is the numeric value of the card, so J = 11, A = 14
   # Suit is the suit of the card, Spades, Diamonds, Clubs or Hearts
-  def initialize(rank, value, suit)
-    @rank = rank
+  def initialize(value, suit)
     @value = value
     @suit = suit
   end
@@ -14,7 +13,15 @@ end
 class Deck
   attr_accessor :deck
   def initialize
-    @deck = nil # Determine the best way to hold the cards
+    @deck = [] # Determine the best way to hold the cards
+  end
+
+  def self.suits
+    [:clubs, :diamonds, :hearts, :spades]
+  end
+
+  def self.values
+    [2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
   end
 
   # Given a card, insert it on the bottom your deck
@@ -34,7 +41,11 @@ class Deck
 
   # Reset this deck with 52 cards
   def create_52_card_deck
-
+    self.suits.each do |suit|
+      @values.each do |value|
+        @deck << Card.new(value, suit)
+      end
+    end
   end
 
 end

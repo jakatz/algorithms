@@ -80,4 +80,13 @@ describe Deck do
       expect(deck.deal_card).to be_an_instance_of(Card)
     end
   end
+
+  describe "#shuffle" do
+    it "shuffles the deck in a random order" do
+      d1 = Deck.new
+      d1.create_52_card_deck
+      d1.shuffle
+      expect(d1.deck.size).to eq(52)
+    end
+  end
 end

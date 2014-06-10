@@ -48,7 +48,10 @@ class Deck
 
   # Mix around the order of the cards in your deck
   def shuffle # You can't use .shuffle!
-
+    @deck.size.times do |i|
+      j = rand(@deck.size)
+      @deck[i], @deck[j] = @deck[j], @deck[i]
+    end
   end
 
   # Remove the top card from your deck and return it
@@ -117,3 +120,58 @@ class WarAPI
     end
   end
 end
+
+
+
+# ============================================
+
+# class LinkedList
+#   Class Node
+#     attr_accessor :value, :next_node
+#   end
+#   def initialize
+#     @first_node = nil
+#     @last_node = nil
+#   end
+
+#   def add_item(item)
+#     node = Node.new
+#     node.value = item
+#     node.next_node = nil
+
+#     if (@first_node == nil)
+#       @first_node = node
+#     end
+
+#     if (@last_node.nil?)
+#       @last_node = node
+#     else
+#       @last_node.next_node = node
+#       @last_node = node
+#     end
+#   end
+
+#   def remove_item
+#     node = @first_node
+#     @first_node = @first_node.next_node
+#     node.next_node = nil
+#     return node.value
+#   end
+# end
+
+# cards = [1, 2]
+
+# first_card = LinkedList::Node.new
+# first_card.value = 1
+# second_card = LinkedList::Node.new
+# second_card.value = 2
+
+# first_card.new_node = second_card
+# third_card = LinkedList::Node.new
+# third_card.value = 3
+# second_card.next_node = third_card
+
+# puts first_card.value
+# puts first_card.next_node.value
+# puts first_card.next_node.next_node.value
+

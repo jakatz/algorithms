@@ -66,10 +66,14 @@ class Deck
 
   def check_array
     if @deck[@current_index].nil?
-      @deck = @ph
-      @current_index = 0
-      @ph = []
+      swap_decks
     end
+  end
+
+  def swap_decks
+    @deck = @ph
+    @current_index = 0
+    @ph = []
   end
 
   # Reset this deck with 52 cards
@@ -85,24 +89,46 @@ end
 
 # You may or may not need to alter this class
 class Player
+  attr_reader :name, :hand
+
   def initialize(name)
     @name = name
     @hand = Deck.new
   end
+
 end
 
 
 class War
-  def initialize(player1, player2)
-    @deck = Deck.new
+  attr_reader :player1, :player2
+
+  def initialize(player1, player2, deck_number = 1)
+    @main_deck = Deck.new
     @player1 = Player.new(player1)
     @player2 = Player.new(player2)
-    # You will need to shuffle and pass out the cards to each player
+
+    deck_number.times do
+      @main_deck.create_52_card_deck
+      @main_deck.shuffle
+    end
+
+    ((@main_deck.deck.size)/2).times do
+      temp = @main_deck.deal_card
+      @player1.hand.add_card(temp)
+    end
+
+    ((@main_deck.deck.size)/2).times do
+      temp = @main_deck.deal_card
+      @player2.hand.add_card(temp)
+    end
+
+    @player1.hand.swap_decks
+    @player2.hand.swap_decks
   end
 
   # You will need to play the entire game in this method using the WarAPI
   def play_game
-    # WarAPI.play_turn()
+    WarAPI.play_turn()
   end
 end
 

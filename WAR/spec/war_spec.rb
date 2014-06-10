@@ -90,3 +90,28 @@ describe Deck do
     end
   end
 end
+
+describe Player do
+  describe "#initialize" do
+    it "is initialized with a name and an empty hand" do
+      player_1 = Player.new("Salt")
+      player_2 = Player.new("Pepper")
+
+      expect(player_1.name).to eq("Salt")
+      expect(player_1.hand.deck.size).to eq(0)
+      expect(player_2.name).to eq("Pepper")
+      expect(player_2.hand.deck.size).to eq(0)
+    end
+  end
+end
+
+describe War do
+  describe "#initialize" do
+    it "creates a main deck, and deals all its cards out evenly to the players" do
+      w = War.new("Salt", "Pepper")
+      expect(w.player1.hand.deck.size).to eq(26)
+      expect(w.player2.hand.deck.size).to eq(26)
+    end
+
+  end
+end

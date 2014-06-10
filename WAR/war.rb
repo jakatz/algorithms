@@ -1,19 +1,36 @@
-# This class is complete. You do not need to alter this
 class Card
-  attr_reader :value, :suit
-  # Value is the numeric value of the card, so J = 11, A = 14
-  # Suit is the suit of the card, Spades, Diamonds, Clubs or Hearts
+  attr_reader :value, :suit, :rank
+
   def initialize(value, suit)
     @value = value
     @suit = suit
+    @rank = get_rank
+  end
+
+  protected
+  def get_rank
+    case @value
+    when 11
+      @rank = "J"
+    when 12
+      @rank = "Q"
+    when 13
+      @rank = "K"
+    when 14
+      @rank = "A"
+    else
+      @rank = @value
+    end
   end
 end
 
-# TODO: You will need to complete the methods in this class
 class Deck
+  attr_reader :current_index, :ph
   attr_accessor :deck
   def initialize
-    @deck = [] # Determine the best way to hold the cards
+    @deck = []
+    @ph = []
+    @current_index = 0
   end
 
   def self.suits
@@ -26,7 +43,7 @@ class Deck
 
   # Given a card, insert it on the bottom your deck
   def add_card(card)
-
+    @ph << card
   end
 
   # Mix around the order of the cards in your deck
@@ -36,13 +53,26 @@ class Deck
 
   # Remove the top card from your deck and return it
   def deal_card
+    i = @current_index
+    card = @deck[i]
+    @deck[i] = nil
+    @current_index += 1
+    check_array
+    return card
+  end
 
+  def check_array
+    if @deck[@current_index].nil?
+      @deck = @ph
+      @current_index = 0
+      @ph = []
+    end
   end
 
   # Reset this deck with 52 cards
   def create_52_card_deck
-    self.suits.each do |suit|
-      @values.each do |value|
+    Deck.suits.each do |suit|
+      Deck.values.each do |value|
         @deck << Card.new(value, suit)
       end
     end

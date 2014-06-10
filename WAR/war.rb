@@ -33,6 +33,10 @@ class Deck
     @current_index = 0
   end
 
+  def self.full_deck_size
+    52
+  end
+
   def self.suits
     [:clubs, :diamonds, :hearts, :spades]
   end
@@ -128,7 +132,7 @@ class War
 
   # You will need to play the entire game in this method using the WarAPI
   def play_game
-    WarAPI.play_turn()
+    WarAPI.play_turn(@player1, @player1.hand.deal_card, @player2, @player2.hand.deal_card)
   end
 end
 
@@ -139,7 +143,7 @@ class WarAPI
   def self.play_turn(player1, card1, player2, card2)
     if card1.value > card2.value
       {player1 => [card1, card2], player2 => []}
-    elsif card2.value > card1.value || Rand(100).even?
+    elsif card2.value > card1.value || rand(100).even?
       {player1 => [], player2 => [card2, card1]}
     else
       {player1 => [card1, card2], player2 => []}

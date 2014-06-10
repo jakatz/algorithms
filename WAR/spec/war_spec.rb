@@ -113,5 +113,13 @@ describe War do
       expect(w.player2.hand.deck.size).to eq(26)
     end
 
+    # it "can create a game with multiple decks" do
+
+    # end
+  end
+
+  describe "#play_game" do
+    it "plays a round of War" do
+    end
   end
 end

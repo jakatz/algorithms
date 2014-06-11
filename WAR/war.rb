@@ -1,3 +1,4 @@
+require 'pry-debugger'
 class Card
   attr_reader :value, :suit, :rank
 
@@ -7,7 +8,6 @@ class Card
     @rank = get_rank
   end
 
-  protected
   def get_rank
     case @value
     when 11
@@ -51,14 +51,14 @@ class Deck
   end
 
   # Mix around the order of the cards in your deck
-  def shuffle # You can't use .shuffle!
+  def shuffle
     @deck.size.times do |i|
       j = rand(@deck.size)
       @deck[i], @deck[j] = @deck[j], @deck[i]
     end
   end
 
-  # Remove the top card from your deck and return it
+# Remove the top card from your deck and return it
   def deal_card
     i = @current_index
     card = @deck[i]
@@ -80,7 +80,7 @@ class Deck
     @ph = []
   end
 
-  # Reset this deck with 52 cards
+# Reset this deck with 52 cards
   def create_52_card_deck
     Deck.suits.each do |suit|
       Deck.values.each do |value|
@@ -100,11 +100,19 @@ class Player
     @hand = Deck.new
   end
 
+  def has_more_cards?
+    if @hand.deck.size == 0
+      return false
+    else
+      return true
+    end
+  end
+
 end
 
 
 class War
-  attr_reader :player1, :player2
+  attr_reader :player1, :player2, :main_deck
 
   def initialize(player1, player2, deck_number = 1)
     @main_deck = Deck.new
@@ -131,9 +139,29 @@ class War
   end
 
   # You will need to play the entire game in this method using the WarAPI
-  def play_game
-    WarAPI.play_turn(@player1, @player1.hand.deal_card, @player2, @player2.hand.deal_card)
+  def play_round
+    p1_turn = @player1.hand.deal_card
+    p2_turn = @player2.hand.deal_card
+    rewards = WarAPI.play_turn(@player1, p1_turn, @player2, p2_turn)
+
+    rewards.each do |key, value|
+      value.each do { |card| key.hand.add_card(card)}
+    end
+
   end
+
+  def complete_game
+    until @player1.has_more_cards? == false || @player2.has_more_cards? == false
+      play_round
+    end
+
+    if @player1.has_more_cards? == true
+      puts "#{@player1.name} won!"
+    else
+      puts "#{@player2.name} won!"
+    end
+  end
+
 end
 
 
@@ -151,6 +179,8 @@ class WarAPI
   end
 end
 
+w = War.new("Salt", "Pepper")
+w.complete_game
 
 
 # ============================================

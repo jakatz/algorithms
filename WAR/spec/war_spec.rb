@@ -118,8 +118,21 @@ describe War do
     # end
   end
 
-  describe "#play_game" do
+  describe "#play_round" do
     it "plays a round of War" do
+      w = War.new("Salt", "Pepper")
+      w.play_round
+      expect(w.main_deck.deck.size).to eq(0)
+      expect((w.player1.hand.deck.size) + (w.player2.hand.deck.size)).to eq(52)
+    end
+  end
+
+  describe "#complete_game" do
+    it "plays a whole game of war" do
+      w = War.new("Salt", "Pepper")
+      w.complete_game
+
+      expect(w.player1.has_more_cards? == false || w.player2.has_more_cards? == false).to eq(true)
     end
   end
 end

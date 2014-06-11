@@ -131,8 +131,11 @@ describe War do
     it "plays a whole game of war" do
       w = War.new("Salt", "Pepper")
       w.complete_game
-
       expect(w.player1.has_more_cards? == false || w.player2.has_more_cards? == false).to eq(true)
     end
   end
+end
+
+describe WarAPI do
+
 end

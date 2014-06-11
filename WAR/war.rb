@@ -91,7 +91,6 @@ class Deck
 
 end
 
-# You may or may not need to alter this class
 class Player
   attr_reader :name, :hand
 
@@ -113,6 +112,8 @@ end
 
 class War
   attr_reader :player1, :player2, :main_deck
+
+  @@rounds_played = 0
 
   def initialize(player1, player2, deck_number = 1)
     @main_deck = Deck.new
@@ -148,6 +149,7 @@ class War
       value.each { |card| key.hand.add_card(card)}
     end
 
+    @@rounds_played += 1
   end
 
   def complete_game
@@ -156,9 +158,9 @@ class War
     end
 
     if @player1.has_more_cards? == true
-      puts "#{@player1.name} won!"
+      puts "#{@player1.name} won after #{@@rounds_played} rounds!"
     else
-      puts "#{@player2.name} won!"
+      puts "#{@player2.name} won after #{@@rounds_played} rounds!"
     end
   end
 
@@ -166,15 +168,39 @@ end
 
 
 class WarAPI
-  # This method will take a card from each player and
-  # return a hash with the cards that each player should receive
   def self.play_turn(player1, card1, player2, card2)
     if card1.value > card2.value
       {player1 => [card1, card2], player2 => []}
-    elsif card2.value > card1.value || rand(100).even?
+    elsif card2.value > card1.value
       {player1 => [], player2 => [card2, card1]}
     else
-      {player1 => [card1, card2], player2 => []}
+      tie(player1, card1, player2, card2)
+    end
+  end
+
+  def self.tie(player1, card1, player2, card2)
+    p1_tie_cards = [card1]
+    p2_tie_cards = [card2]
+
+    4.times do
+      p1_tie_cards << player1.hand.deal_card
+      p2_tie_cards << player2.hand.deal_card
+    end
+
+    p1_tie_cards.compact!
+    p2_tie_cards.compact!
+
+    loot = (p1_tie_cards.dup << p2_tie_cards).flatten!
+
+    p1_last_card = p1_tie_cards.last
+    p2_last_card = p2_tie_cards.last
+
+    if p1_last_card.value > p2_last_card.value
+        {player1 => loot, player2 => []}
+    elsif p2_last_card.value > p1_last_card.value
+        {player1 => [], player2 => loot}
+    else
+      tie(player1, p1_last_card, player2, p2_last_card)
     end
   end
 end

@@ -145,7 +145,7 @@ class War
     rewards = WarAPI.play_turn(@player1, p1_turn, @player2, p2_turn)
 
     rewards.each do |key, value|
-      value.each do { |card| key.hand.add_card(card)}
+      value.each { |card| key.hand.add_card(card)}
     end
 
   end

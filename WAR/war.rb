@@ -137,6 +137,7 @@ class War
 
     @player1.hand.swap_decks
     @player2.hand.swap_decks
+    ##find alternate solution for this ^
   end
 
   # You will need to play the entire game in this method using the WarAPI
@@ -153,11 +154,12 @@ class War
   end
 
   def complete_game
-    until @player1.has_more_cards? == false || @player2.has_more_cards? == false
+    # until !@player1.has_more_cards? || !@player2.has_more_cards?
+    while @player1.has_more_cards? && @player2.has_more_cards?
       play_round
     end
 
-    if @player1.has_more_cards? == true
+    if @player1.has_more_cards?
       puts "#{@player1.name} won after #{@@rounds_played} rounds!"
     else
       puts "#{@player2.name} won after #{@@rounds_played} rounds!"

@@ -50,6 +50,15 @@ describe Deck do
     end
   end
 
+  # d = Deck.new
+  # d.count_cards == 0
+  # d.add_card(5)
+  # d.add_card(10)
+  # d.count_cards == 2
+  # d.deal_card == 5
+  # d.deal_card == 10
+  # d.deal_card == nil
+
   describe "#deal_card" do
     it "removes a card from the deck and replaces it with nil" do
       d1 = Deck.new
@@ -132,6 +141,7 @@ describe War do
       w = War.new("Salt", "Pepper")
       w.complete_game
       expect(w.player1.has_more_cards? == false || w.player2.has_more_cards? == false).to eq(true)
+      #add test for full deck
     end
   end
 end

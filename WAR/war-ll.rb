@@ -34,7 +34,7 @@ class LinkedList
     @node_count += 1
   end
 
-  def unshift
+  def shift
     node = @first_node
     @first_node = @first_node.next_node
     node.next_node = nil
@@ -52,7 +52,7 @@ class Deck
 
 # Remove the top card from your deck and return it
   def deal_card
-    @deck.unshift
+    @deck.shift
   end
 
   # Given a card, insert it on the bottom your deck
@@ -128,7 +128,7 @@ class Player
   end
 
   def has_more_cards?
-    if @hand.deck.size == 0
+    if @hand.deck.node_count == 0
       return false
     else
       return true
@@ -153,19 +153,16 @@ class War
       @main_deck.shuffle
     end
 
-    ((@main_deck.deck.size)/2).times do
+    ((@main_deck.deck.node_count)/2).times do
       temp = @main_deck.deal_card
       @player1.hand.add_card(temp)
     end
 
-    ((@main_deck.deck.size)/2).times do
+    (@main_deck.deck.node_count).times do
       temp = @main_deck.deal_card
       @player2.hand.add_card(temp)
     end
 
-    @player1.hand.swap_decks
-    @player2.hand.swap_decks
-    ##find alternate solution for this ^
   end
 
   # You will need to play the entire game in this method using the WarAPI
